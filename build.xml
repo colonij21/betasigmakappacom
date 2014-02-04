@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="BetaSigmaKappa.com" default="help">
+    <property file="./build.properties" />
+
+    <!-- ============================================================ -->
+    <!-- Target: help                                                 -->
+    <!-- ============================================================ -->
+    <target name="help">
+        <echo message="Beeeetaaaa!  Here is how you build the site: " />
+        <echo message="" />
+        <echo message="Specify the DRUPAL_ROOT directory in build.properties and then type 'phing build' -- Dangerous!" />
+    </target>
+
+    <!-- ============================================================ -->
+    <!-- Target: build                                                -->
+    <!-- ============================================================ -->
+    <target name="build" depends="clean">
+        <echo message="Starting build in: ${drupal.root}" />
+
+        <!-- Run drush make to create the default drupal filesystem layout -->
+        <exec command="drush make bsk.make ${drupal.root}" dir="." returnProperty="return" />
+        <if>
+            <not>
+                <equals arg1="${return}" arg2="0" />
+            </not>
+            <then>
+                <fail message="Could not complete drush make, try running manually first" />
+            </then>
+        </if>
+        <echo message="Completed drush make" />
+
+        <!-- copy custom modules, themes and other configuration -->
+        <copy todir="${drupal.root}/sites/all/modules/custom">
+            <fileset dir="src/modules" includes="**" />
+        </copy>
+        <copy todir="${drupal.root}/sites/all/themes">
+            <fileset dir="src/themes" includes="**" />
+        </copy>
+        <copy todir="${drupal.root}/profiles">
+            <fileset dir="src/profiles" includes="**" />
+        </copy>
+
+        <!-- Set file permissions and create files directory to prepare for install -->
+        <copy file="${drupal.root}/sites/default/default.settings.php"
+              tofile="${drupal.root}/sites/default/settings.php" />
+        <chmod file="${drupal.root}/sites/default/settings.php" mode="0664" />
+        <mkdir dir="${drupal.root}/sites/default/files" />
+        <chmod file="${drupal.root}/sites/default/files" mode="0775" />
+    </target>
+
+    <!-- ============================================================ -->
+    <!-- Target: clean                                                -->
+    <!-- ============================================================ -->
+    <target name="clean">
+        <echo message="Drupal root dir set to ${drupal.root}" />
+        <input propertyName="continue" validArgs="Y,N" defaultValue="N">
+            Are you sure you want to clean the drupal root directory?
+        </input>
+
+        <if>
+            <equals arg1="${continue}" arg2="N" casesensitive="false" />
+            <then>
+                <fail message="Stopping on your request" />
+            </then>
+        </if>
+
+        <!-- Delete everything but leave the directory in place -->
+        <delete includeemptydirs="true">
+            <fileset dir="${drupal.root}" includes="**" defaultexcludes="false" />
+        </delete>
+    </target>
+
+    <!-- ============================================================ -->
+    <!-- Target: resync                                               -->
+    <!-- ============================================================ -->
+    <target name="resync">
+        <copy todir="${drupal.root}/sites/all/modules/custom">
+            <fileset dir="src/modules" includes="**" />
+        </copy>
+        <copy todir="${drupal.root}/sites/all/themes">
+            <fileset dir="src/themes" includes="**" />
+        </copy>
+        <copy todir="${drupal.root}/profiles">
+            <fileset dir="src/profiles" includes="**" />
+        </copy>
+
+        <echo message="Clearing cache..." />
+        <exec command="drush cc all" dir="${drupal.root}" />
+    </target>
+</project>
