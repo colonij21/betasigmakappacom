@@ -1,0 +1,42 @@
+input,textarea{border:2px solid #E5E5E5;width:400px;color:#999;box-shadow:rgba(0,0,0,0.1) 0 0 8px;-moz-box-shadow:rgba(0,0,0,0.1) 0 0 8px;-webkit-box-shadow:rgba(0,0,0,0.1) 0 0 8px;padding:10px}
+textarea{width:400px;height:150px;max-width:400px;line-height:18px}
+input:hover,textarea:hover,input:focus,textarea:focus{box-shadow:rgba(0,0,0,0.2) 0 0 8px;-moz-box-shadow:rgba(0,0,0,0.2) 0 0 8px;-webkit-box-shadow:rgba(0,0,0,0.2) 0 0 8px;border-color:#C9C9C9}
+.form label{margin-left:10px;color:#999}
+.submit input{width:100px;height:40px;background-color:#474E69;color:#FFF;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px}
+fieldset{border:0px;}
+.form img {height:25px;width:25px;padding:10px;}
+.success{background: #CFFFF5;padding: 10px;margin-bottom: 10px;border: 1px solid #B9ECCE;border-radius: 5px;font-weight: normal;width: 400px;}
+.error{background: #FFDFDF;padding: 10px;margin-bottom: 10px;border: 1px solid #FFCACA;border-radius: 5px;font-weight: normal;}
+
+.right_content{float:right;height:100%;width:450px; padding-top: 20px;}
+
+
+/* #2- Portrait tablet to landscape and desktop */
+@media screen (min-width: 768px) and (max-width: 979px) {
+
+input,textarea {
+	width: 560px;
+}
+
+}
+
+
+/* #3- Landscape phone to portrait tablet */
+@media screen (max-width: 767px) { 
+
+input,textarea {
+	width: 560px;
+}
+
+}
+
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+
+input,textarea {
+	width: 280px;
+}
+
+
+}
